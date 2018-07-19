@@ -9,12 +9,18 @@ public class MapGenerator : MonoBehaviour
     public List<GameObject> currentMaps;
     private float screenHeightInPoints;
 
+    public static float RealHeight;
+
+    public static float PixelPerSecond;
+
     // Use this for initialization
     void Start ()
     {
         //float height = 480 * 0.24f;
 
         screenHeightInPoints = 480;// 2.0f * Camera.main.orthographicSize;
+
+        RealHeight = screenHeightInPoints * currentMaps.First().transform.localScale.y;
 
         StartCoroutine(GeneratorCheck());
     }
@@ -67,6 +73,7 @@ public class MapGenerator : MonoBehaviour
         foreach (var Map in MapsToRemove)
         {
             currentMaps.Remove(Map);
+            Swipe.Instance.DrawEnded -= Map.GetComponent<MapModification>().Instance_DrawEnded;
             Destroy(Map);
         }
 

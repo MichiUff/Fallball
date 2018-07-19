@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 114612472397430822}
   - component: {fileID: 222233721679759508}
   - component: {fileID: 114557771122329620}
+  - component: {fileID: 114718199060676432}
   m_Layer: 5
   m_Name: Map
   m_TagString: Untagged
@@ -95,6 +96,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114718199060676432
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1582406738426082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821996fd9f912a04f845cf28e6123504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SwipeManager: {fileID: 0}
 --- !u!222 &222233721679759508
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -136,6 +149,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 320, y: 480}
   m_Pivot: {x: 0.5, y: 0.5}
