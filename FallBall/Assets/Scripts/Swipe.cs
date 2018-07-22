@@ -33,19 +33,18 @@ public class Swipe : MonoBehaviour
         #region Standalone Inputs
         if (Input.GetMouseButtonDown(0))
         {
-            startTouch = Input.mousePosition;
+            startTouch = GetWorldCoordianates(Input.mousePosition);
             //startTime = DateTime.Now;
             IsDrawing = true;
-
         }
         else if (Input.GetMouseButtonUp(0))
         {
             //Map movement must be removed from vector
             //var mapMovementY = (float)(DateTime.Now - startTime).TotalSeconds * PlayerController.Instances.First().DownwardMovementSpeed;
-            var tmp = (Vector2)Input.mousePosition;
+            //var tmp = (Vector2)Input.mousePosition;
             //tmp.y += mapMovementY;
 
-            OnDrawEnd(startTouch, tmp);
+            OnDrawEnd(startTouch, GetWorldCoordianates(Input.mousePosition));
             Reset();
         }
         #endregion
@@ -56,7 +55,8 @@ public class Swipe : MonoBehaviour
         {
             if (Input.touches[0].phase == TouchPhase.Began)
             {
-                startTouch = Input.touches[0].position;
+                startTouch = GetWorldCoordianates(Input.touches[0].position);
+                    //Camera.main.ScreenToWorldPoint(Input.touches[0].position);
                 //startTime = DateTime.Now;
                 IsDrawing = true;
 
@@ -65,10 +65,10 @@ public class Swipe : MonoBehaviour
             {
                 //Map movement must be removed from vector
                 //var mapMovementY = (float) (DateTime.Now - startTime).TotalSeconds * PlayerController.Instances.First().DownwardMovementSpeed;
-                var tmp = Input.touches[0].position;
+                //var tmp = Camera.main.ScreenToWorldPoint(Input.touches[0].position);
                 //tmp.y += mapMovementY;
 
-                OnDrawEnd(startTouch, tmp);
+                OnDrawEnd(startTouch, GetWorldCoordianates(Input.touches[0].position));
                 Reset();
             }
         }
@@ -92,5 +92,13 @@ public class Swipe : MonoBehaviour
     {
         if (DrawEnded != null)
             DrawEnded(start, end);
+    }
+
+    private Vector2 GetWorldCoordianates(Vector3 v)
+    {
+        v.z = 100;
+        v = Camera.main.ScreenToWorldPoint(v);
+
+        return v;
     }
 }

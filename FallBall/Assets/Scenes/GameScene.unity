@@ -642,7 +642,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faa9ca9b771186e4e9ec20a55cb9d5ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  downwardMovementSpeed: 40
+  DownwardMovementSpeed: 20
 --- !u!114 &450448133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1596,11 +1596,6 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 114718199060676432, guid: 03dfd584be3a46d48bdbeb0b6ebfd9e8,
-        type: 2}
-      propertyPath: SwipeManager
-      value: 
-      objectReference: {fileID: 1160069887}
     - target: {fileID: 1582406738426082, guid: 03dfd584be3a46d48bdbeb0b6ebfd9e8, type: 2}
       propertyPath: m_Name
       value: StartMap
