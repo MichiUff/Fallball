@@ -19,10 +19,11 @@ public class Swipe : MonoBehaviour
     }
 
     #endregion
-    
+
+    public static bool IsDrawing = false;
     private Vector2 startTouch;
-    private DateTime startTime;
-    private float mapMovementY;
+    //private DateTime startTime;
+    //private float mapMovementY;
 
     public delegate void DrawEnd(Vector2 start, Vector2 end);
     public event DrawEnd DrawEnded;
@@ -33,14 +34,16 @@ public class Swipe : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             startTouch = Input.mousePosition;
-            startTime = DateTime.Now;
+            //startTime = DateTime.Now;
+            IsDrawing = true;
+
         }
         else if (Input.GetMouseButtonUp(0))
         {
             //Map movement must be removed from vector
             //var mapMovementY = (float)(DateTime.Now - startTime).TotalSeconds * PlayerController.Instances.First().DownwardMovementSpeed;
             var tmp = (Vector2)Input.mousePosition;
-            tmp.y += mapMovementY;
+            //tmp.y += mapMovementY;
 
             OnDrawEnd(startTouch, tmp);
             Reset();
@@ -54,32 +57,35 @@ public class Swipe : MonoBehaviour
             if (Input.touches[0].phase == TouchPhase.Began)
             {
                 startTouch = Input.touches[0].position;
-                startTime = DateTime.Now;
+                //startTime = DateTime.Now;
+                IsDrawing = true;
+
             }
             else if (Input.touches[0].phase == TouchPhase.Ended || Input.touches[0].phase == TouchPhase.Canceled)
             {
                 //Map movement must be removed from vector
                 //var mapMovementY = (float) (DateTime.Now - startTime).TotalSeconds * PlayerController.Instances.First().DownwardMovementSpeed;
                 var tmp = Input.touches[0].position;
-                tmp.y += mapMovementY;
+                //tmp.y += mapMovementY;
 
                 OnDrawEnd(startTouch, tmp);
                 Reset();
             }
         }
 
-
-        if(startTouch != Vector2.zero)
-            mapMovementY += (float) Time.deltaTime * PlayerController.Instances.First().DownwardMovementSpeed;
+        //if (startTouch != Vector2.zero)
+            //mapMovementY += (float)Time.deltaTime * PlayerController.Instances.First().DownwardMovementSpeed;
 
         #endregion
     }
 
     private void Reset()
     {
-        startTouch  = Vector2.zero;
-        startTime = DateTime.MinValue;
-        mapMovementY = 0;
+        startTouch = Vector2.zero;
+        IsDrawing = false;
+
+        //startTime = DateTime.MinValue;
+        //mapMovementY = 0;
     }
 
     private void OnDrawEnd(Vector2 start, Vector2 end)

@@ -83,6 +83,12 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+    void FixedUpdate()
+    {
+        GenerateMapIfRequired();
+
+    }
+
     private IEnumerator GeneratorCheck()
     {
         while (true)

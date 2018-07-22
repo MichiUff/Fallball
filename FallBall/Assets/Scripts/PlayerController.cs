@@ -15,18 +15,19 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody playerRigidbody;
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         playerRigidbody = transform.GetComponent<Rigidbody>();
     }
-	
-	void FixedUpdate ()
+
+    void FixedUpdate()
     {
-        if(!MenuButtonManager.Paused)
+        if (MenuButtonManager.Paused || Swipe.IsDrawing)
         {
-            playerRigidbody.velocity = new Vector3(0, -DownwardMovementSpeed, 0);
+            playerRigidbody.velocity = new Vector3(0, 0, 0);
         }
         else
-            playerRigidbody.velocity = new Vector3(0, 0, 0);
+            playerRigidbody.velocity = new Vector3(0, -DownwardMovementSpeed, 0);
+
     }
 }
