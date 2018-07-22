@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class MapModification : MonoBehaviour
 {
+    public Transform Cube;
+    public float Ancho = 3;
+    public float Alto = 10;
+
     // Use this for initialization
     void Start()
     {
@@ -21,28 +25,23 @@ public class MapModification : MonoBehaviour
         {
             Debug.Log("Draw is ended - Draw from " + start + "to " + end);
 
-            DrawLine(new Vector3(start.x, start.y, 90), new Vector3(end.x, end.y, 90), Color.green);
+            DrawALine(new Vector3(start.x, start.y, 90), new Vector3(end.x, end.y, 90));
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    void DrawALine(Vector3 start, Vector3 end)
     {
+        Vector3 posC = ((end - start) * 0.5F) + start;
+        float lengthC = (end - start).magnitude; //C#
+        float sineC  = (end.y - start.y) / lengthC;
+        float angleC = Mathf.Asin(sineC) * Mathf.Rad2Deg;
+        if (end.x < start.x) { angleC = 0 - angleC; }
 
-    }
 
-    void DrawLine(Vector3 start, Vector3 end, Color color, float duration = 0.2f)
-    {
-        GameObject myLine = new GameObject();
-        myLine.transform.position = start;
-        myLine.AddComponent<LineRenderer>();
-        LineRenderer lr = myLine.GetComponent<LineRenderer>();
-        //lr.material = new Material(Shader.Find("Particles/Alpha Blended Premultiply"));
-        lr.SetColors(color, color);
-        lr.SetWidth(0.1f, 0.1f);
-        lr.SetPosition(0, start);
-        lr.SetPosition(1, end);
-        //GameObject.Destroy(myLine, duration);
+        Transform myLine = Instantiate(Cube, posC, Quaternion.identity);
+        myLine.localScale = new Vector3(lengthC, Ancho, Alto);
+
+        myLine.rotation = Quaternion.Euler(0, 0, angleC);
     }
 
 }

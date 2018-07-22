@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public static List<PlayerController> Instances = new List<PlayerController>();
-
+    
     void Awake()
     {
         Instances.Add(this);
@@ -19,15 +19,15 @@ public class PlayerController : MonoBehaviour
     {
         playerRigidbody = transform.GetComponent<Rigidbody>();
     }
-
+    
     void FixedUpdate()
     {
         if (MenuButtonManager.Paused || Swipe.IsDrawing)
         {
             playerRigidbody.velocity = new Vector3(0, 0, 0);
         }
-        else
-            playerRigidbody.velocity = new Vector3(0, -DownwardMovementSpeed, 0);
+        //else
+            //playerRigidbody.velocity = new Vector3(0, -DownwardMovementSpeed, 0);
 
     }
 }
