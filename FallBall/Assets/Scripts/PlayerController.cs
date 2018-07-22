@@ -26,8 +26,8 @@ public class PlayerController : MonoBehaviour
         {
             playerRigidbody.velocity = new Vector3(0, 0, 0);
         }
-        //else
-            //playerRigidbody.velocity = new Vector3(0, -DownwardMovementSpeed, 0);
+        else
+            playerRigidbody.velocity = new Vector3(0, -DownwardMovementSpeed, 0);
 
     }
 }

@@ -22,8 +22,11 @@ public class Swipe : MonoBehaviour
 
     public static bool IsDrawing = false;
     private Vector2 startTouch;
+    private GameObject temporaryLine;
     //private DateTime startTime;
     //private float mapMovementY;
+
+    private bool standalone, mobile;
 
     public delegate void DrawEnd(Vector2 start, Vector2 end);
     public event DrawEnd DrawEnded;
@@ -36,6 +39,7 @@ public class Swipe : MonoBehaviour
             startTouch = GetWorldCoordianates(Input.mousePosition);
             //startTime = DateTime.Now;
             IsDrawing = true;
+            standalone = true;
         }
         else if (Input.GetMouseButtonUp(0))
         {
@@ -47,6 +51,14 @@ public class Swipe : MonoBehaviour
             OnDrawEnd(startTouch, GetWorldCoordianates(Input.mousePosition));
             Reset();
         }
+        else if (IsDrawing && standalone)
+        {
+            if (temporaryLine != null)
+                GameObject.Destroy(temporaryLine);
+
+            temporaryLine = MapModification.DrawALine(startTouch, GetWorldCoordianates(Input.mousePosition), false);
+        }
+        
         #endregion
 
         #region Mobile Inputs
@@ -56,9 +68,10 @@ public class Swipe : MonoBehaviour
             if (Input.touches[0].phase == TouchPhase.Began)
             {
                 startTouch = GetWorldCoordianates(Input.touches[0].position);
-                    //Camera.main.ScreenToWorldPoint(Input.touches[0].position);
+                //Camera.main.ScreenToWorldPoint(Input.touches[0].position);
                 //startTime = DateTime.Now;
                 IsDrawing = true;
+                mobile = true;
 
             }
             else if (Input.touches[0].phase == TouchPhase.Ended || Input.touches[0].phase == TouchPhase.Canceled)
@@ -71,10 +84,17 @@ public class Swipe : MonoBehaviour
                 OnDrawEnd(startTouch, GetWorldCoordianates(Input.touches[0].position));
                 Reset();
             }
+            else if (IsDrawing && mobile)
+            {
+                if (temporaryLine != null)
+                    GameObject.Destroy(temporaryLine);
+
+                temporaryLine = MapModification.DrawALine(startTouch, GetWorldCoordianates(Input.touches[0].position), false);
+            }
         }
 
         //if (startTouch != Vector2.zero)
-            //mapMovementY += (float)Time.deltaTime * PlayerController.Instances.First().DownwardMovementSpeed;
+        //mapMovementY += (float)Time.deltaTime * PlayerController.Instances.First().DownwardMovementSpeed;
 
         #endregion
     }
@@ -82,15 +102,20 @@ public class Swipe : MonoBehaviour
     private void Reset()
     {
         startTouch = Vector2.zero;
-        IsDrawing = false;
+        IsDrawing = standalone = mobile = false;
 
         //startTime = DateTime.MinValue;
         //mapMovementY = 0;
+
+        if (temporaryLine != null)
+            GameObject.Destroy(temporaryLine);
+
+        temporaryLine = null;
     }
 
     private void OnDrawEnd(Vector2 start, Vector2 end)
     {
-        if (DrawEnded != null)
+        if (DrawEnded != null && start != end)
             DrawEnded(start, end);
     }
 
