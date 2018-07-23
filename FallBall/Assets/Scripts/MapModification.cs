@@ -9,6 +9,8 @@ public class MapModification : MonoBehaviour
     public static Transform InvalidLine;
     public static float Ancho = 1;
     public static float Alto = 1;
+
+    public static float MinimumLength = 3;
     
     private static Material materialLineInvalid;
 
@@ -28,9 +30,9 @@ public class MapModification : MonoBehaviour
         var playerCoords = PlayerController.Instances.First().transform.position;
         var halfHeight = MapGenerator.RealHeight / 2;
 
-        //Is on my map and Player is not colliding
-        if (transform.position.y >= (playerCoords.y - halfHeight) && transform.position.y <= (playerCoords.y + halfHeight) && !PlayerController.FirstPlayer.currentlyColliding)
-            DrawALine(start, end);
+        //Is on my map
+        if (transform.position.y >= (playerCoords.y - halfHeight) && transform.position.y <= (playerCoords.y + halfHeight))
+            DrawALine(start, end, false);
     }
 
     /// <summary>
@@ -39,24 +41,36 @@ public class MapModification : MonoBehaviour
     /// <param name="start">Start point</param>
     /// <param name="end">End point</param>
     /// <returns></returns>
-    public static GameObject DrawALine(Vector3 start, Vector3 end)
+    public static GameObject DrawALine(Vector3 start, Vector3 end, bool temporary = true)
     {
         end.z = panelPosition;
         start.z = panelPosition;
 
         Vector3 posC = ((end - start) * 0.5F) + start;
-        float lengthC = (end - start).magnitude; 
+        float lengthC = (end - start).magnitude;
         float sineC = (end.y - start.y) / lengthC;
         float angleC = Mathf.Asin(sineC) * Mathf.Rad2Deg;
         if (end.x < start.x) { angleC = 0 - angleC; }
 
         Transform myLine;
-        Debug.Log("HÖ: " + PlayerController.FirstPlayer.currentlyColliding);
-        if (!PlayerController.FirstPlayer.currentlyColliding)
+
+        if (lengthC < MinimumLength)
+            return null;
+
+        int necessaryInk = (int)lengthC;
+
+        if (!PlayerController.FirstPlayer.currentlyColliding && necessaryInk <= InkManager.CurrentInk)
+        {
             myLine = Instantiate(ValidLine, posC, Quaternion.identity);
+
+            if (!temporary)
+                InkManager.CurrentInk -= necessaryInk;
+        }
         else
         {
-            Debug.Log("Invalid!!!");
+            if (!temporary)//No inc or collider allows no drawing of fix elements - Only temporary lines allowed
+                return null;
+
             myLine = Instantiate(InvalidLine, posC, Quaternion.identity);
         }
 
