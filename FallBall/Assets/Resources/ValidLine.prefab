@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23567926005238756}
   - component: {fileID: 65857250428264382}
   m_Layer: 0
-  m_Name: Line
+  m_Name: ValidLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,7 +92,7 @@ BoxCollider:
   m_GameObject: {fileID: 1965950083613710}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}

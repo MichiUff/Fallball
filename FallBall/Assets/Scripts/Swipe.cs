@@ -53,10 +53,11 @@ public class Swipe : MonoBehaviour
         }
         else if (IsDrawing && standalone)
         {
-            if (temporaryLine != null)
-                GameObject.Destroy(temporaryLine);
+            RemoveTemporaryLine();
 
-            temporaryLine = MapModification.DrawALine(startTouch, GetWorldCoordianates(Input.mousePosition), false);
+            temporaryLine = MapModification.DrawALine(startTouch, GetWorldCoordianates(Input.mousePosition));
+
+            PlayerController.FirstPlayer.currentlyColliding = false; //On Trigger Exit is not called when destroying
         }
         
         #endregion
@@ -86,10 +87,11 @@ public class Swipe : MonoBehaviour
             }
             else if (IsDrawing && mobile)
             {
-                if (temporaryLine != null)
-                    GameObject.Destroy(temporaryLine);
+                RemoveTemporaryLine();
 
-                temporaryLine = MapModification.DrawALine(startTouch, GetWorldCoordianates(Input.touches[0].position), false);
+                temporaryLine = MapModification.DrawALine(startTouch, GetWorldCoordianates(Input.touches[0].position));
+
+                PlayerController.FirstPlayer.currentlyColliding = false; //On Trigger Exit is not called when destroying
             }
         }
 
@@ -107,8 +109,8 @@ public class Swipe : MonoBehaviour
         //startTime = DateTime.MinValue;
         //mapMovementY = 0;
 
-        if (temporaryLine != null)
-            GameObject.Destroy(temporaryLine);
+        RemoveTemporaryLine();
+        PlayerController.FirstPlayer.currentlyColliding = false; //On Trigger Exit is not called when destroying
 
         temporaryLine = null;
     }
@@ -125,5 +127,13 @@ public class Swipe : MonoBehaviour
         v = Camera.main.ScreenToWorldPoint(v);
 
         return v;
+    }
+
+    private void RemoveTemporaryLine()
+    {
+        if (temporaryLine != null)
+        {
+            GameObject.Destroy(temporaryLine);
+        }
     }
 }
