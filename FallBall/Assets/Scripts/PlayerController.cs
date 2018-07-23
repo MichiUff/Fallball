@@ -52,21 +52,16 @@ public class PlayerController : MonoBehaviour
 
         if (!currentlyCollidingWithLine)
         {
-            Debug.Log("ENTER1 "+ Swipe.IsDrawing);
             currentlyColliding = Swipe.IsDrawing;
         }
         else //Catch init call of on trigger enter, which occurs when player on top of line and Collision is changed to trigger
         {
-            Debug.Log("ENTER2");
-
             currentlyCollidingWithLine = false;
         }
     }
 
     void OnTriggerExit(Collider collision)
     {
-        Debug.Log("EXIT");
-
         currentlyColliding = false;
     }
 
