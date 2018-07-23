@@ -614,7 +614,7 @@ GameObject:
   - component: {fileID: 450448133}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -725,6 +725,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b753d22ed5506f4883fe32964eb1c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnableItems:
+  - {fileID: 1076469411789154, guid: e94de4127cba58443a542929e21721a9, type: 2}
   availableMaps:
   - {fileID: 1582406738426082, guid: 03dfd584be3a46d48bdbeb0b6ebfd9e8, type: 2}
   currentMaps:

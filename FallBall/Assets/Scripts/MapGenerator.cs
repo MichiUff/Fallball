@@ -1,15 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
+    public GameObject[] spawnableItems;
     public GameObject[] availableMaps;
     public List<GameObject> currentMaps;
     private float screenHeightInPoints;
+    private float screenWidthInPoints;
 
     public static float RealHeight;
+    public static float RealWidth;
 
     public static float PixelPerSecond;
 
@@ -18,25 +22,40 @@ public class MapGenerator : MonoBehaviour
     {
         //float height = 480 * 0.24f;
 
-        screenHeightInPoints = 480;// 2.0f * Camera.main.orthographicSize;
+        //TODO
+        screenHeightInPoints = 480;// 2.0f * Camera.main.orthographicSize; 
+        screenWidthInPoints = 320;// 2.0f * Camera.main.orthographicSize;
 
         RealHeight = screenHeightInPoints * currentMaps.First().transform.localScale.y;
+        RealWidth = screenWidthInPoints * currentMaps.First().transform.localScale.x;
 
         StartCoroutine(GeneratorCheck());
     }
 
     void AddMap(float farthestMapEndY)
     {
-        int randomMapIndex = Random.Range(0, availableMaps.Length);
+        int randomMapIndex = UnityEngine.Random.Range(0, availableMaps.Length);
 
         GameObject Map = (GameObject)Instantiate(availableMaps[randomMapIndex]);
-
-        float MapHeight = Map.transform.localScale.y * screenHeightInPoints;//TODO Scale is not height
-
-        float MapCenter = farthestMapEndY - MapHeight;
+        
+        float MapCenter = farthestMapEndY - RealHeight;
         Map.transform.position = new Vector3(0, MapCenter, 90);
 
+        SpawnSelectable(MapCenter);
+
         currentMaps.Add(Map);
+    }
+
+    private void SpawnSelectable(float mapCenterY)
+    {
+        var widthWithOffset = (float)(RealWidth/2 - 0.1 * RealWidth); 
+        var x = UnityEngine.Random.Range(-widthWithOffset, widthWithOffset);
+        var y = UnityEngine.Random.Range(mapCenterY - RealHeight/2, mapCenterY + RealHeight/2);
+        
+        int randomSpawnIndex = UnityEngine.Random.Range(0, spawnableItems.Length);
+
+        GameObject item = (GameObject)Instantiate(spawnableItems[randomSpawnIndex]);
+        item.transform.position = new Vector3(x, y, 90);
     }
 
     private void GenerateMapIfRequired()
