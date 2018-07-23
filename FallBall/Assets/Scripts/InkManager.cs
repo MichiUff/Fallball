@@ -7,6 +7,8 @@ public class InkManager : MonoBehaviour
     private static int maxInk = 1000;
     private static int currentInk = 100;
 
+    public static int OneInkPerLength = 3;
+
     public static int CurrentInk
     {
         get

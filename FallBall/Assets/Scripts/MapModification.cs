@@ -15,6 +15,7 @@ public class MapModification : MonoBehaviour
     private static Material materialLineInvalid;
 
     private static float panelPosition = 90; //TODO hardcoded....
+    
 
     // Use this for initialization
     void Start()
@@ -57,7 +58,7 @@ public class MapModification : MonoBehaviour
         if (lengthC < MinimumLength)
             return null;
 
-        int necessaryInk = (int)lengthC;
+        int necessaryInk = (int)lengthC / InkManager.OneInkPerLength;
 
         if (!PlayerController.FirstPlayer.currentlyColliding && necessaryInk <= InkManager.CurrentInk)
         {
