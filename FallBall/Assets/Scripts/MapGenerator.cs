@@ -53,8 +53,7 @@ public class MapGenerator : MonoBehaviour
         var y = UnityEngine.Random.Range(mapCenterY - RealHeight/2, mapCenterY + RealHeight/2);
         
         int randomSpawnIndex = UnityEngine.Random.Range(0, spawnableItems.Length);
-
-        GameObject item = (GameObject)Instantiate(spawnableItems[randomSpawnIndex]);
+        GameObject item = Instantiate(spawnableItems[randomSpawnIndex]);
         item.transform.position = new Vector3(x, y, 90);
     }
 

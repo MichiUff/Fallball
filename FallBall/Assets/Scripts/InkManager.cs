@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class InkManager : MonoBehaviour
 {
-    private static int maxInk = 1000;
-    private static int currentInk = 100;
+    public static InkManager Instance;
 
-    public static int OneInkPerLength = 3;
+    public int MaxInk = 1000;
+    private int currentInk;
+    public int StartInk = 100;
 
-    public static int CurrentInk
+    public int OneInkPerLength = 3;
+
+    public int CurrentInk
     {
         get
         {
@@ -22,8 +25,8 @@ public class InkManager : MonoBehaviour
             if (currentInk < MapModification.MinimumLength)
                 currentInk = 0; 
 
-            if (currentInk > maxInk)
-                currentInk = maxInk;
+            if (currentInk > MaxInk)
+                currentInk = MaxInk;
 
             OnInkUpdated();
         }
@@ -32,13 +35,15 @@ public class InkManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        Instance = this;
+        currentInk = StartInk;
         OnInkUpdated();
     }
 
     public delegate void UpdateInk(int ink);
-    public static event UpdateInk UpdatedInk;
+    public event UpdateInk UpdatedInk;
 
-    static void OnInkUpdated()
+    void OnInkUpdated()
     {
         if (UpdatedInk != null)
             UpdatedInk(currentInk);

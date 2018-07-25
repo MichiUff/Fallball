@@ -58,14 +58,14 @@ public class MapModification : MonoBehaviour
         if (lengthC < MinimumLength)
             return null;
 
-        int necessaryInk = (int)lengthC / InkManager.OneInkPerLength;
+        int necessaryInk = (int)lengthC / InkManager.Instance.OneInkPerLength;
 
-        if (!PlayerController.FirstPlayer.currentlyColliding && necessaryInk <= InkManager.CurrentInk)
+        if (!PlayerController.FirstPlayer.currentlyColliding && necessaryInk <= InkManager.Instance.CurrentInk)
         {
             myLine = Instantiate(ValidLine, posC, Quaternion.identity);
 
             if (!temporary)
-                InkManager.CurrentInk -= necessaryInk;
+                InkManager.Instance.CurrentInk -= necessaryInk;
         }
         else
         {
@@ -74,8 +74,6 @@ public class MapModification : MonoBehaviour
 
             myLine = Instantiate(InvalidLine, posC, Quaternion.identity);
         }
-
-        var lineCollider = myLine.GetComponent<BoxCollider>();
 
         myLine.localScale = new Vector3(lengthC, Ancho, Alto);
         myLine.rotation = Quaternion.Euler(0, 0, angleC);

@@ -251,7 +251,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821996fd9f912a04f845cf28e6123504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InitCube: {fileID: 4814498322896000, guid: 608c1f0a15913424b834657c6af25574, type: 2}
 --- !u!222 &222233721679759508
 CanvasRenderer:
   m_ObjectHideFlags: 1

@@ -6,7 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class MenuButtonManager : MonoBehaviour
 {
+    private static Transform t;
+
     public static bool Paused = false;
+
+    void Start()
+    {
+        t = transform;
+    }
 
     public void btnPlay_Click()
     {
@@ -28,13 +35,18 @@ public class MenuButtonManager : MonoBehaviour
     
     public void btnRestart_Click()
     {
-        throw new NotImplementedException();
         Paused = false;
+        SceneManager.LoadScene("GameScene");
     }
 
     public void btnMainMenu_Click()
     {
-        SceneManager.LoadScene("MainMenu");
         Paused = false;
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public static void GameoverScreen()
+    {
+        t.Find("panelGameOver").gameObject.SetActive(true);
     }
 }

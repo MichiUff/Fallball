@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -16,27 +17,33 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        Instances.Clear();
         Instances.Add(this);
     }
 
     public int DownwardMovementSpeed = 20;
 
-    public bool currentlyColliding = false; 
+    public bool currentlyColliding = false;
     private bool currentlyCollidingWithLine = false; //Temporary value for switchover from collisoon to trigger, trigger should be ignored one time
 
+    internal void Die()
+    {
+        MenuButtonManager.Paused = true;
+        MenuButtonManager.GameoverScreen();
+    }
 
     private Rigidbody playerRigidbody;
-    private Collider collider;
+    private Collider playerCollider;
     // Use this for initialization
     void Start()
     {
         playerRigidbody = GetComponent<Rigidbody>();
-        collider = GetComponent<Collider>();
+        playerCollider = GetComponent<Collider>();
     }
 
     void FixedUpdate()
     {
-        collider.isTrigger = Swipe.IsDrawing;
+        playerCollider.isTrigger = Swipe.IsDrawing;
 
         if (MenuButtonManager.Paused || Swipe.IsDrawing)
         {
