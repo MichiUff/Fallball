@@ -32,9 +32,9 @@ public class InkSpawnable : BaseSpawnableItem
         }
     }
 
-    void OnTriggerEnter(Collider collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if(collision.transform.tag == "Player")
         {
             Destroy(gameObject);
             InkManager.Instance.CurrentInk += value;

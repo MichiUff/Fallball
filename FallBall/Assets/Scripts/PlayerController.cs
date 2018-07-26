@@ -32,13 +32,15 @@ public class PlayerController : MonoBehaviour
         MenuButtonManager.GameoverScreen();
     }
 
-    private Rigidbody playerRigidbody;
-    private Collider playerCollider;
+    private Rigidbody2D playerRigidbody;
+    private CircleCollider2D playerCollider;
     // Use this for initialization
     void Start()
     {
-        playerRigidbody = GetComponent<Rigidbody>();
-        playerCollider = GetComponent<Collider>();
+        playerRigidbody = GetComponent<Rigidbody2D>();
+        playerCollider = GetComponent<CircleCollider2D>();
+
+        playerRigidbody.freezeRotation = true;
     }
 
     void FixedUpdate()
@@ -50,11 +52,14 @@ public class PlayerController : MonoBehaviour
             playerRigidbody.velocity = new Vector3(0, 0, 0);
         }
         else
+        {
             playerRigidbody.velocity = new Vector3(0, -DownwardMovementSpeed, 0);
+        }
+
     }
 
     //Called in draw mode
-    void OnTriggerEnter(Collider collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
 
         if (!currentlyCollidingWithLine)
@@ -67,18 +72,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OnTriggerExit(Collider collision)
+    void OnTriggerExit2D(Collider2D collision)
     {
         currentlyColliding = false;
     }
 
     //Called in game mode
-    void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         currentlyCollidingWithLine = true;
     }
 
-    public void OnCollisionExit(Collision collision)
+    public void OnCollisionExit2D(Collision2D collision)
     {
         currentlyCollidingWithLine = false;
     }

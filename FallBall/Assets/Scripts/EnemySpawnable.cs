@@ -6,9 +6,10 @@ public class EnemySpawnable : BaseSpawnableItem
 {
     private int value;
 
-    void OnTriggerEnter(Collider collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        Debug.Log("ENTER!");
+        if (collision.transform.tag == "Player")
         {
             PlayerController.FirstPlayer.Die();
         }

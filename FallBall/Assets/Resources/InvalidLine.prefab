@@ -21,8 +21,8 @@ GameObject:
   - component: {fileID: 4814498322896000}
   - component: {fileID: 33203959805430338}
   - component: {fileID: 23567926005238756}
-  - component: {fileID: 65857250428264382}
   - component: {fileID: 114293087218826090}
+  - component: {fileID: 61418191259579260}
   m_Layer: 0
   m_Name: InvalidLine
   m_TagString: Untagged
@@ -85,18 +85,31 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1965950083613710}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &65857250428264382
-BoxCollider:
+--- !u!61 &61418191259579260
+BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1965950083613710}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: 9a7787be8fd228c498758e6e9651e53f, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!114 &114293087218826090
 MonoBehaviour:
   m_ObjectHideFlags: 1
