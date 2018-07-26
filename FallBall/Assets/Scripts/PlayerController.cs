@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private Animator animator;
+
     public static PlayerController FirstPlayer
     {
         get
@@ -41,6 +43,9 @@ public class PlayerController : MonoBehaviour
         playerCollider = GetComponent<CircleCollider2D>();
 
         playerRigidbody.freezeRotation = true;
+
+        animator = transform.GetComponent<Animator>();
+
     }
 
     void FixedUpdate()
@@ -61,7 +66,6 @@ public class PlayerController : MonoBehaviour
     //Called in draw mode
     void OnTriggerEnter2D(Collider2D collision)
     {
-
         if (!currentlyCollidingWithLine)
         {
             currentlyColliding = Swipe.IsDrawing;
@@ -81,10 +85,13 @@ public class PlayerController : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         currentlyCollidingWithLine = true;
+        animator.SetBool("Slide", true);
     }
 
     public void OnCollisionExit2D(Collision2D collision)
     {
         currentlyCollidingWithLine = false;
+        animator.SetBool("Slide", false);
+
     }
 }
