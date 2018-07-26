@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
     private float startPositionX = float.MaxValue;
     internal void Die()
     {
+        animator.SetBool("Dead", true);
+
         MenuButtonManager.Paused = true;
         MenuButtonManager.GameoverScreen();
     }
