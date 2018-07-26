@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
 
     public bool currentlyColliding = false;
     private bool currentlyCollidingWithLine = false; //Temporary value for switchover from collisoon to trigger, trigger should be ignored one time
-
+    private float startPositionX = float.MaxValue;
     internal void Die()
     {
         MenuButtonManager.Paused = true;
@@ -45,7 +45,6 @@ public class PlayerController : MonoBehaviour
         playerRigidbody.freezeRotation = true;
 
         animator = transform.GetComponent<Animator>();
-
     }
 
     void FixedUpdate()
@@ -59,8 +58,22 @@ public class PlayerController : MonoBehaviour
         else
         {
             playerRigidbody.velocity = new Vector3(0, -DownwardMovementSpeed, 0);
+            
+            //Rotate on slide
+            if (startPositionX != float.MaxValue)
+            {
+                if (transform.position.x < startPositionX)
+                {
+                    RotateLeft();
+                    startPositionX = float.MaxValue;
+                }
+                else if (transform.position.x > startPositionX)
+                {
+                    RotateRight();
+                    startPositionX = float.MaxValue;
+                }
+            }
         }
-
     }
 
     //Called in draw mode
@@ -86,12 +99,35 @@ public class PlayerController : MonoBehaviour
     {
         currentlyCollidingWithLine = true;
         animator.SetBool("Slide", true);
+
+        startPositionX = transform.position.x;
     }
 
     public void OnCollisionExit2D(Collision2D collision)
     {
         currentlyCollidingWithLine = false;
         animator.SetBool("Slide", false);
+    }
 
+    private void RotateLeft()
+    {
+        var tmp = transform.localScale;
+
+        if (tmp.x > 0)
+        {
+            tmp.x *= -1;
+            transform.localScale = tmp;
+        }
+    }
+
+    private void RotateRight()
+    {
+        var tmp = transform.localScale;
+
+        if (tmp.x < 0)
+        {
+            tmp.x *= -1;
+            transform.localScale = tmp;
+        }
     }
 }
