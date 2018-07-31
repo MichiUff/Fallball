@@ -7,7 +7,7 @@ public class MapModification : MonoBehaviour
 {
     public static Transform ValidLine;
     public static Transform InvalidLine;
-    public static float Ancho = 1;
+    public static float Ancho = 3;
     public static float Alto = 1;
 
     public static float MinimumLength = 3;

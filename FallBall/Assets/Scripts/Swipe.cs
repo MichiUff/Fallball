@@ -21,15 +21,20 @@ public class Swipe : MonoBehaviour
     #endregion
 
     public static bool IsDrawing = false;
-    private Vector2 startTouch;
+
+    public static Vector2 TapCoordinates;
+
+    private static bool tap = false;
+    private Vector2 startTouch, endTouch;
     private GameObject temporaryLine;
-    //private DateTime startTime;
-    //private float mapMovementY;
 
     private bool standalone, mobile;
 
     public delegate void DrawEnd(Vector2 start, Vector2 end);
     public event DrawEnd DrawEnded;
+
+    public delegate void Tap(Vector2 pos);
+    public static event Tap Taped;
 
     private void FixedUpdate()
     {
@@ -39,18 +44,17 @@ public class Swipe : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             startTouch = GetWorldCoordianates(Input.mousePosition);
-            //startTime = DateTime.Now;
+
             IsDrawing = true;
             standalone = true;
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            //Map movement must be removed from vector
-            //var mapMovementY = (float)(DateTime.Now - startTime).TotalSeconds * PlayerController.Instances.First().DownwardMovementSpeed;
-            //var tmp = (Vector2)Input.mousePosition;
-            //tmp.y += mapMovementY;
+            endTouch = GetWorldCoordianates(Input.mousePosition);
+            OnDrawEnd(startTouch, endTouch);
+            
+            CheckForTap();
 
-            OnDrawEnd(startTouch, GetWorldCoordianates(Input.mousePosition));
             Reset();
         }
         else if (IsDrawing && standalone)
@@ -61,7 +65,7 @@ public class Swipe : MonoBehaviour
 
             PlayerController.FirstPlayer.currentlyColliding = false; //On Trigger Exit is not called when destroying
         }
-        
+
         #endregion
 
         #region Mobile Inputs
@@ -71,20 +75,18 @@ public class Swipe : MonoBehaviour
             if (Input.touches[0].phase == TouchPhase.Began)
             {
                 startTouch = GetWorldCoordianates(Input.touches[0].position);
-                //Camera.main.ScreenToWorldPoint(Input.touches[0].position);
-                //startTime = DateTime.Now;
+
                 IsDrawing = true;
                 mobile = true;
 
             }
             else if (Input.touches[0].phase == TouchPhase.Ended || Input.touches[0].phase == TouchPhase.Canceled)
             {
-                //Map movement must be removed from vector
-                //var mapMovementY = (float) (DateTime.Now - startTime).TotalSeconds * PlayerController.Instances.First().DownwardMovementSpeed;
-                //var tmp = Camera.main.ScreenToWorldPoint(Input.touches[0].position);
-                //tmp.y += mapMovementY;
+                endTouch = GetWorldCoordianates(Input.touches[0].position);
+                OnDrawEnd(startTouch, endTouch);
 
-                OnDrawEnd(startTouch, GetWorldCoordianates(Input.touches[0].position));
+                CheckForTap();
+
                 Reset();
             }
             else if (IsDrawing && mobile)
@@ -97,19 +99,14 @@ public class Swipe : MonoBehaviour
             }
         }
 
-        //if (startTouch != Vector2.zero)
-        //mapMovementY += (float)Time.deltaTime * PlayerController.Instances.First().DownwardMovementSpeed;
-
         #endregion
     }
 
     private void Reset()
     {
         startTouch = Vector2.zero;
+        endTouch = Vector2.zero;
         IsDrawing = standalone = mobile = false;
-
-        //startTime = DateTime.MinValue;
-        //mapMovementY = 0;
 
         RemoveTemporaryLine();
         PlayerController.FirstPlayer.currentlyColliding = false; //On Trigger Exit is not called when destroying
@@ -121,6 +118,12 @@ public class Swipe : MonoBehaviour
     {
         if (DrawEnded != null && start != end)
             DrawEnded(start, end);
+    }
+
+    private void OnTap(Vector2 pos)
+    {
+        if (Taped != null)
+            Taped(pos);
     }
 
     private Vector2 GetWorldCoordianates(Vector3 v)
@@ -135,7 +138,16 @@ public class Swipe : MonoBehaviour
     {
         if (temporaryLine != null)
         {
-            GameObject.Destroy(temporaryLine);
+            temporaryLine.GetComponent<Line>().Destroy(); //TODO regarding event unsubscribe
+            //GameObject.Destroy(temporaryLine);
+        }
+    }
+
+    private void CheckForTap()
+    {
+        if ((endTouch - startTouch).magnitude < MapModification.MinimumLength)
+        {
+            OnTap(startTouch);
         }
     }
 }

@@ -8,6 +8,10 @@ public class PlayerController : MonoBehaviour
 {
     private Animator animator;
 
+    private ActionTick tick;
+    private int SamePositionCount;
+    private Vector3 oldPosition;
+
     public static PlayerController FirstPlayer
     {
         get
@@ -21,12 +25,15 @@ public class PlayerController : MonoBehaviour
     {
         Instances.Clear();
         Instances.Add(this);
+        tick = new ActionTick(1000);
     }
 
     public int DownwardMovementSpeed = 20;
 
     public bool currentlyColliding = false;
     private bool currentlyCollidingWithLine = false; //Temporary value for switchover from collisoon to trigger, trigger should be ignored one time
+    private GameObject currentCollidingLine;
+
     private float startPositionX = float.MaxValue;
     internal void Die()
     {
@@ -75,6 +82,27 @@ public class PlayerController : MonoBehaviour
                     startPositionX = float.MaxValue;
                 }
             }
+
+            if(tick.IsAction())
+            {
+                Debug.Log(Vector3.Distance(oldPosition, transform.position));
+                if(oldPosition != null && Vector3.Distance(oldPosition, transform.position) < 5)
+                {
+                    SamePositionCount++;
+                }
+                else
+                {
+                    SamePositionCount = 0;
+                    oldPosition = transform.position;
+                }
+
+                if(SamePositionCount >= 3)
+                {
+                    Debug.Log("We must break!");
+                    if (currentCollidingLine != null)
+                        Destroy(currentCollidingLine);
+                }
+            }
         }
     }
 
@@ -103,12 +131,15 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Slide", true);
 
         startPositionX = transform.position.x;
+        if(collision.transform.tag == "Line")
+            currentCollidingLine = collision.gameObject;
     }
 
     public void OnCollisionExit2D(Collision2D collision)
     {
         currentlyCollidingWithLine = false;
         animator.SetBool("Slide", false);
+        currentCollidingLine = null;
     }
 
     private void RotateLeft()
