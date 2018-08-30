@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class MenuButtonManager : MonoBehaviour
+public class MenuManager : MonoBehaviour
 {
     private static Transform t;
 
@@ -13,6 +14,12 @@ public class MenuButtonManager : MonoBehaviour
     void Start()
     {
         t = transform;
+        ScoreManager.Instance.OnScoreUpdate += Instance_OnScoreUpdate;
+    }
+
+    private void Instance_OnScoreUpdate(int score)
+    {
+        t.Find("panelGameOver").Find("panelMenue").Find("Score").GetComponent<Text>().text = "Score " + score.ToString();
     }
 
     public void btnPlay_Click()
@@ -48,5 +55,10 @@ public class MenuButtonManager : MonoBehaviour
     public static void GameoverScreen()
     {
         t.Find("panelGameOver").gameObject.SetActive(true);
+    }
+
+    void OnDestroy()
+    {
+        ScoreManager.Instance.OnScoreUpdate -= Instance_OnScoreUpdate;
     }
 }

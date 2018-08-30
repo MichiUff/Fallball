@@ -38,6 +38,7 @@ public class InkSpawnable : BaseSpawnableItem
         {
             Destroy(gameObject);
             InkManager.Instance.CurrentInk += value;
+            ScoreManager.Instance.CurrentScore += value;
         }
     }
 }

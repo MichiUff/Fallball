@@ -38,7 +38,7 @@ public class Swipe : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (MenuButtonManager.Paused)
+        if (MenuManager.Paused)
             return;
         #region Standalone Inputs
         if (Input.GetMouseButtonDown(0))

@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
     private int SamePositionCount;
     private Vector3 oldPosition;
 
+    public float OneScorePerMeters = 100;
+    private float meterSinceLastScore;
+
     public static PlayerController FirstPlayer
     {
         get
@@ -28,7 +31,7 @@ public class PlayerController : MonoBehaviour
         tick = new ActionTick(1000);
     }
 
-    public int DownwardMovementSpeed = 20;
+    public int DownwardMovementSpeed = 100;
 
     public bool currentlyColliding = false;
     private bool currentlyCollidingWithLine = false; //Temporary value for switchover from collisoon to trigger, trigger should be ignored one time
@@ -39,8 +42,8 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetBool("Dead", true);
 
-        MenuButtonManager.Paused = true;
-        MenuButtonManager.GameoverScreen();
+        MenuManager.Paused = true;
+        MenuManager.GameoverScreen();
     }
 
     private Rigidbody2D playerRigidbody;
@@ -60,7 +63,7 @@ public class PlayerController : MonoBehaviour
     {
         playerCollider.isTrigger = Swipe.IsDrawing;
 
-        if (MenuButtonManager.Paused || Swipe.IsDrawing)
+        if (MenuManager.Paused || Swipe.IsDrawing)
         {
             playerRigidbody.velocity = new Vector3(0, 0, 0);
         }
@@ -85,7 +88,7 @@ public class PlayerController : MonoBehaviour
 
             if(tick.IsAction())
             {
-                Debug.Log(Vector3.Distance(oldPosition, transform.position));
+                //Debug.Log(Vector3.Distance(oldPosition, transform.position));
                 if(oldPosition != null && Vector3.Distance(oldPosition, transform.position) < 5)
                 {
                     SamePositionCount++;
@@ -93,6 +96,7 @@ public class PlayerController : MonoBehaviour
                 else
                 {
                     SamePositionCount = 0;
+                    meterSinceLastScore += Math.Abs(transform.position.y) - Math.Abs(oldPosition.y);
                     oldPosition = transform.position;
                 }
 
@@ -101,6 +105,13 @@ public class PlayerController : MonoBehaviour
                     Debug.Log("We must break!");
                     if (currentCollidingLine != null)
                         Destroy(currentCollidingLine);
+                }
+
+                //Score a point while meters way done
+                if(meterSinceLastScore > OneScorePerMeters)
+                {
+                    ScoreManager.Instance.CurrentScore += 1;
+                    meterSinceLastScore = 0;
                 }
             }
         }
